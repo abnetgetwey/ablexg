@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Belayhun! 🎉</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --primary-yellow: #FFD54F;
+            --primary-blue: #4FC3F7;
+            --soft-pink: #FF8A80;
+            --bg-color: #FFFDE7; 
+            --text-color: #37474F;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Fredoka One', cursive; color: var(--text-color); }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            margin: 0 15px;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+        nav a:hover { color: var(--primary-blue); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, #E1F5FE 0%, #FFF9C4 100%);
+            padding: 20px;
+            overflow: hidden;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; color: #0277BD; animation: popIn 1s ease-out; text-shadow: 2px 2px 0px #fff;}
+        .hero p { font-size: 1.5rem; max-width: 600px; animation: slideUp 1s ease-out 0.5s backwards; }
+        .hero-btn {
+            margin-top: 2rem;
+            padding: 12px 30px;
+            background-color: var(--soft-pink);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-family: 'Fredoka One', cursive;
+            transition: transform 0.2s;
+            animation: slideUp 1s ease-out 0.8s backwards;
+        }
+        .hero-btn:hover { transform: scale(1.05); background-color: #ff5252; }
+
+        /* Canvas & Balloons */
+        #confetti-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+        .balloon-container { position: absolute; top: -100px; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .balloon {
+            position: absolute;
+            bottom: -120px;
+            width: 60px; height: 75px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            opacity: 0.9;
+            animation: floatUp 15s linear infinite;
+        }
+        .balloon::before {
+            content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 40px; background: rgba(0,0,0,0.2);
+        }
+
+        /* --- GENERAL SECTIONS --- */
+        section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+        .section-title {
+            text-align: center; font-size: 2.5rem; margin-bottom: 3rem; color: var(--text-color);
+            position: relative;
+        }
+        .section-title::after {
+            content: ''; display: block; width: 60px; height: 4px; background: var(--primary-yellow);
+            margin: 10px auto; border-radius: 2px;
+        }
+        .fade-in-section { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
+        .fade-in-section.is-visible { opacity: 1; transform: none; }
+
+        /* --- GALLERY GRID --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            aspect-ratio: 1 / 1; 
+            background: #eee;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        .caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+            text-align: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        .gallery-item:hover .caption { transform: translateY(0); }
+
+        /* --- WISHES & FUNNY SECTIONS --- */
+        .wishes-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
+        .wish-card {
+            background: var(--card-bg); padding: 30px; border-radius: 20px;
+            flex: 1 1 300px; box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary-yellow); transition: transform 0.3s;
+        }
+        .wish-card:hover { transform: translateY(-5px); }
+        .wish-card h3 { margin-bottom: 15px; color: #FBC02D; }
+
+        .funny-wrapper {
+            background: white; border-radius: 20px; padding: 40px; text-align: center;
+            box-shadow: 0 10px 25px rgba(79, 195, 247, 0.15);
+        }
+        .joke-box { background: #FFF9C4; padding: 20px; border-radius: 10px; margin: 20px 0; font-style: italic; display: inline-block; }
+
+        footer { text-align: center; padding: 40px 20px; background: #37474F; color: white; margin-top: 50px; }
+
+        /* Keyframes */
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 80% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes floatUp { 0% { bottom: -120px; transform: translateX(0); } 50% { transform: translateX(20px); } 100% { bottom: 120vh; transform: translateX(-20px); } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#hero">Home</a>
+        <a href="#gallery">Memories</a>
+        <a href="#wishes">Wishes</a>
+        <a href="#funny">Fun Zone</a>
+    </nav>
+
+    <header id="hero" class="hero">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="balloon-container" id="balloon-container"></div>
+        <h1>Happy Birthday Belayhun! 🎉</h1>
+        <p>Time for the party to start!</p>
+        <button class="hero-btn" onclick="playMusicAndConfetti()">Start the Party 🎵</button>
+    </header>
+
+    <!-- GALLERY WITH CORRECT IMGBLY LINKS -->
+    <section id="gallery" class="fade-in-section">
+        <h2 class="section-title">Beautiful Memories</h2>
+        <div class="gallery-grid">
+            
+            <!-- PHOTO 1 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/TqgJZOwuTY.png" alt="Memory 1">
+                <div class="caption"> 📸</div>
+            </div>
+
+            <!-- PHOTO 2 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/X7Hf8Zr7v4.png" alt="Memory 2" >
+                <div class="caption"> 😎</div>
+            </div>
+
+            <!-- PHOTO 3 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/D6EFxYMYTV.png" alt="Memory 3" >
+                <div class="caption"> 😁</div>
+            </div>
+
+            <!-- PHOTO 4 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/zSQZGejNdd.jpg" alt="Memory 4" >
+                <div class="caption"> ✨</div>
+            </div>
+
+            <!-- PHOTO 5 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/nt3MBNnzIt.jpg" alt="Memory 5" >
+                <div class="caption"> 🎈</div>
+            </div>
+
+            <!-- PHOTO 6 -->
+            <div class="gallery-item">
+                <img src="https://storage.imgbly.com/imgbly/Fzh8XjclHU.jpg" alt="Memory 6" >
+                <div class="caption"> 🎂</div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="wishes" class="fade-in-section">
+        <h2 class="section-title">Heartfelt Wishes</h2>
+        <div class="wishes-container">
+            <div class="wish-card">
+                <h3>Brotherhood 👊</h3>
+                <p>Happy Birthday, Belayhun! Having a brother like you is a blessing. You've always been there to support and annoy me (in equal measure). Wishing you a year as amazing as you are.</p>
+            </div>
+
+            <div class="wish-card">
+                <h3>Success & Growth 🚀</h3>
+                <p>May this new year bring you closer to your dreams. I know how hard you work, and I believe that great things are coming your way. Keep shining!</p>
+            </div>
+
+            <div class="wish-card">
+                <h3>Health & Happiness 🌟</h3>
+                <p>My wish for you is simple: Good health, endless joy, and peace of mind. May your days be filled with laughter and your heart with contentment.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="funny" class="fade-in-section">
+        <h2 class="section-title">The Fun Zone 🤪</h2>
+        <div class="funny-wrapper">
+            <h3>Because age is just a number...</h3>
+            
+            <div class="joke-box">
+                <p>"Why did the birthday boy go to the doctor? <br>Because he was feeling a little <strong>old</strong>!"</p>
+            </div>
+
+            <ul style="text-align: left; max-width: 500px; margin: 0 auto; list-style: none;">
+                <li style="margin-bottom: 10px;">💀 You are officially older than you were yesterday.</li>
+                <li style="margin-bottom: 10px;">🧓 Your hairline might be receding, but your charm is expanding.</li>
+                <li style="margin-bottom: 10px;">🎂 Don't worry about getting older; you're still younger than you'll be next year!</li>
+            </ul>
+
+            <button class="hero-btn" onclick="triggerConfettiBurst()" style="margin-top: 30px;">More Confetti! 🎊</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>Made with ❤️ for Belayhun.</p>
+        <p>Hope your year is fantastic!</p>
+    </footer>
+
+    <!-- BEAUTIFUL ACOUSTIC GUITAR BIRTHDAY SONG -->
+    <audio id="bg-music" loop>
+        <!-- Source: Pixabay (Acoustic Guitar Version) -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=happy-birthday-acoustic-guitar-11765.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- 1. BALLOON GENERATOR ---
+        function createBalloons() {
+            const container = document.getElementById('balloon-container');
+            const colors = ['#FF8A80', '#4FC3F7', '#FFD54F', '#AED581', '#BA68C8'];
+            for (let i = 0; i < 15; i++) {
+                const balloon = document.createElement('div');
+                balloon.classList.add('balloon');
+                const randomLeft = Math.floor(Math.random() * 100);
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomDuration = Math.floor(Math.random() * 10) + 10;
+                const randomDelay = Math.floor(Math.random() * 5);
+                balloon.style.left = randomLeft + 'vw';
+                balloon.style.backgroundColor = randomColor;
+                balloon.style.animationDuration = randomDuration + 's';
+                balloon.style.animationDelay = randomDelay + 's';
+                container.appendChild(balloon);
+            }
+        }
+        // --- 2. SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('is-visible'); });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.fade-in-section').forEach(section => observer.observe(section));
+        
+        // --- 3. MUSIC & CONFETTI ---
+        let musicPlaying = false;
+        function playMusicAndConfetti() {
+            const audio = document.getElementById('bg-music');
+            if (!musicPlaying) {
+                audio.play().then(() => { 
+                    musicPlaying = true; 
+                    document.querySelector('.hero-btn').innerText = "Pause Music ⏸️"; 
+                }).catch(e => {
+                    console.log("Audio play failed:", e);
+                    alert("Please click on the page first if music doesn't start!");
+                });
+                triggerConfettiBurst();
+            } else {
+                audio.pause(); 
+                musicPlaying = false; 
+                document.querySelector('.hero-btn').innerText = "Play Music 🎵";
+            }
+        }
+        // --- 4. CANVAS CONFETTI ---
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height - canvas.height;
+                this.size = Math.random() * 10 + 5;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 2 - 1;
+                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+            }
+            update() { this.y += this.speedY; this.x += this.speedX; this.rotation += this.rotationSpeed; if (this.y > canvas.height) { this.y = -20; this.x = Math.random() * canvas.width; } }
+            draw() { ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.rotation * Math.PI / 180); ctx.fillStyle = this.color; ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size); ctx.restore(); }
+        }
+        function initConfetti() { for (let i = 0; i < 100; i++) particles.push(new Particle()); animateConfetti(); }
+        function animateConfetti() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateConfetti); }
+        function triggerConfettiBurst() { particles.forEach(p => p.speedY = Math.random() * 5 + 5); setTimeout(() => particles.forEach(p => p.speedY = Math.random() * 3 + 2), 1000); }
+        createBalloons(); initConfetti();
+    </script>
+</body>
+</html>
